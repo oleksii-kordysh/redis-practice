@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: redis-practice
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+  hikari:
+    maximum-pool-size: 20
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+        default_schema: public
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+
+  web:
+    error:
+      include-stacktrace: never
+      include-message: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: healt,metrics,prometeus,caches
+  metrics:
+    tags:
+      application: redis-spring-demo

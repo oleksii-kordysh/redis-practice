@@ -1,9 +1,24 @@
 services:
   postgres:
     image: 'postgres:latest'
+    restart: on-failure
+    volumes:
+      - postgres_data:/var/lib/postgresql
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
     ports:
-      - '5432'
+      - "5432:5432"
+    mem_limit: 128m
+
+  redis:
+    image: 'redis:latest'
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+volumes:
+  postgres_data:
+  redis_data:
