@@ -5,6 +5,7 @@ import alcordya.redispractice.domain.db.ProductEntity;
 import alcordya.redispractice.domain.service.CacheMode;
 import alcordya.redispractice.domain.service.DbProductService;
 import alcordya.redispractice.domain.service.ManualCachingProductService;
+import alcordya.redispractice.domain.service.SpringCacheProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final DbProductService dbProductService;;
-    private final ManualCachingProductService manualCachingProductService;;
+    private final DbProductService dbProductService;
+    private final ManualCachingProductService manualCachingProductService;
+    private final SpringCacheProductService springCacheProductService;
     private final ProductDtoMapper productDtoMapper;
 
     @PostMapping
@@ -77,6 +79,7 @@ public class ProductController {
         return switch (cacheMode) {
             case MANUAL -> manualCachingProductService;
             case NONE_CACHE -> dbProductService;
+            case SPRING_CACHE -> springCacheProductService;
             case null -> throw new IllegalArgumentException("Invalid cacheMode");
         };
     }
